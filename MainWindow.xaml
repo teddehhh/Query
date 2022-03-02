@@ -1,0 +1,192 @@
+﻿<Window x:Class="Query.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:hlprs="clr-namespace:Query.Helpers"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:Query"
+        mc:Ignorable="d"
+        Title="MainWindow" MinHeight="350" MinWidth="900">
+    <Window.Resources>
+        <Style x:Key="ButtonStyle"
+               TargetType="{x:Type Button}">
+            <Setter Property="Control.Width" Value="150"/>
+            <Setter Property="Control.Height" Value="30"/>
+            <Setter Property="Control.FontSize" Value="16"/>
+            <Setter Property="Control.Margin" Value="10,0,10,0"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+        <TabControl Grid.Row="0"
+                    FontSize="15"
+                    SelectedItem="{Binding SelectedTab}">
+            <TabItem Header="Attributes">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+                    <TreeView ItemsSource="{Binding TreeCollectionView}">
+                        <TreeView.Resources>
+                            <HierarchicalDataTemplate DataType="{x:Type hlprs:Table}" ItemsSource="{Binding Columns}">
+                                <TextBlock Text="{Binding Name}"/>
+                            </HierarchicalDataTemplate>
+                            <DataTemplate DataType="{x:Type hlprs:Attribute}">
+                                <CheckBox Content="{Binding Name}"
+                                        IsChecked="{Binding IsChecked}"/>
+                            </DataTemplate>
+                        </TreeView.Resources>
+                    </TreeView>
+                    <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Bottom">
+                        <Button Height="30"
+                            Content="Clear"
+                            Command="{Binding ClearCheckCmd}"/>
+                        <Button Height="30"
+                            Content=" Check All"
+                            Command="{Binding CheckAllCmd}"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Conditions">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="50"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <ListView ItemsSource="{Binding CollectionView}"
+                                SelectedItem="{Binding SelectedCondition}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Attribute">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Attribute}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Table">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Table}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Criterion">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Operator}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Value">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Value}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Link">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Operation}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <StackPanel Orientation="Horizontal"
+                            Grid.Row="1">
+                        <StackPanel>
+                            <TextBlock Text="Table"
+                                    HorizontalAlignment="Center"/>
+                            <ComboBox ItemsSource="{Binding CondTables}"
+                                SelectedItem="{Binding SelectedTable}"
+                                Width="100"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock Text="Attribute"
+                                    HorizontalAlignment="Center"/>
+                            <ComboBox IsEnabled="{Binding AttributesIsEnabled}"
+                                ItemsSource="{Binding CondAttributes}"
+                                SelectedItem="{Binding SelectedAttribute}"
+                                DisplayMemberPath="Name"
+                                Width="100"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock Text="Creterion"
+                                    HorizontalAlignment="Center"/>
+                            <ComboBox ItemsSource="{Binding Operators}"
+                                SelectedItem="{Binding SelectedOperator}"
+                                Width="100"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock Text="Link"
+                                    HorizontalAlignment="Center"/>
+                            <ComboBox ItemsSource="{Binding Operations}"
+                                SelectedItem="{Binding SelectedOperation}"
+                                IsEnabled="{Binding OperationIsEnabled}"
+                                Width="100"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="Values"
+                                    HorizontalAlignment="Center"/>
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox Width="100"
+                                    Text="{Binding ValueCond, UpdateSourceTrigger=PropertyChanged}"
+                                    IsEnabled="{Binding ValueIsEnabled}"/>
+                                <DatePicker SelectedDate="{Binding SelectedDate, UpdateSourceTrigger=PropertyChanged}"
+                                    IsEnabled="{Binding DateIsEnabled}"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Right">
+                            <Button Content="Add Condition"
+                            Command="{Binding AddCondCmd}"
+                            IsEnabled="{Binding AddIsEnabled}"
+                                Style="{StaticResource ButtonStyle}"/>
+                            <Button Content="Delete Condition"
+                            Command="{Binding DeleteCondCmd}"
+                            IsEnabled="{Binding DeleteIsEnabled}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+
+            </TabItem>
+            <TabItem Header="Result">
+                <ListView ItemsSource="{Binding Table}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding S}"></TextBlock>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </TabItem>
+        </TabControl>
+
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right">
+            <Button Content="Preview query"
+                    Style="{StaticResource ButtonStyle}"
+                    Command="{Binding ShowQueryCmd}"/>
+            <Button Content="Run query"
+                    Style="{StaticResource ButtonStyle}"
+                    Command="{Binding RunQueryCmd}"/>
+        </StackPanel>
+    </Grid>
+</Window>
