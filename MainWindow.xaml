@@ -159,7 +159,8 @@
             </TabItem>
             <TabItem Header="Query">
                 <DataGrid ItemsSource="{Binding DataView}"
-                          AutoGenerateColumns="True"/>
+                          AutoGenerateColumns="True"
+                          Background="AliceBlue"/>
 
 
                 <!--<ListView ItemsSource="{Binding Table}"
@@ -185,7 +186,7 @@
             <Button Content="Show query"
                     Style="{StaticResource ButtonStyle}"
                     Command="{Binding ShowQueryCmd}"/>
-            <Button Content="Run query"
+            <Button Content="Query"
                     Style="{StaticResource ButtonStyle}"
                     Command="{Binding RunQueryCmd}"/>
         </StackPanel>
