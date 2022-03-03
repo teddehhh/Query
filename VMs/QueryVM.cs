@@ -239,44 +239,16 @@ namespace Query.VMs
                 return;
             }
             List<List<string>> table = DataProvider.Instance.RunQuery(_QueryBuilder.QueryBuild(Attributes.Where(a => a.IsChecked).ToList(), Conditions.ToList()));
-            Table = new List<Result>();
-            foreach (var item in table)
+            dataTable = new DataTable();
+            foreach (var item in table.First())
             {
-                Table.Add(new Result() { S = "" });
-                foreach (var f in item)
-                {
-                    Table.Last().S += f + "  ||  ";
-                }
+                dataTable.Columns.Add(new DataColumn(item, typeof(string)));
             }
-            OnPropertyChanged(nameof(Table));
-        });
-        public RelayCommand CheckAllCmd => checkAllCmd ?? new RelayCommand(obj =>
-        {
-            foreach (var item in treeCollection)
+            foreach (var item in table.Skip(1))
             {
-                foreach (var col in item.Columns)
-                {
-                    if (!col.IsChecked)
-                    {
-                        col.IsChecked = true;
-                    }
-                }
+                dataTable.Rows.Add(item.ToArray());
             }
-            TreeCollectionView.Refresh();
-        });
-        public RelayCommand ClearCheckCmd => clearCheckCmd ?? new RelayCommand(obj =>
-        {
-            foreach (var item in treeCollection)
-            {
-                foreach (var col in item.Columns)
-                {
-                    if (col.IsChecked)
-                    {
-                        col.IsChecked = false;
-                    }
-                }
-            }
-            TreeCollectionView.Refresh();
+            OnPropertyChanged(nameof(DataView));
         });
         public void CleanControls()
         {
@@ -309,5 +281,18 @@ namespace Query.VMs
         public List<string> Headers { get; set; }
         public List<string> Rows { get; set; }
         public List<Result> Table { get; set; }
+        private DataTable dataTable;
+        public DataTable DataView
+        {
+            get
+            {
+                return dataTable;
+            }
+            set
+            {
+                dataTable = value;
+                OnPropertyChanged(nameof(DataView));
+            }
+        }
     }
 }

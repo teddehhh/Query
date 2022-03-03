@@ -4,16 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:hlprs="clr-namespace:Query.Helpers"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:Query"
         mc:Ignorable="d"
-        Title="MainWindow" MinHeight="350" MinWidth="900">
+        Title="MainWindow" MinHeight="350" MinWidth="900"
+        Background="AliceBlue">
     <Window.Resources>
         <Style x:Key="ButtonStyle"
                TargetType="{x:Type Button}">
-            <Setter Property="Control.Width" Value="150"/>
-            <Setter Property="Control.Height" Value="30"/>
-            <Setter Property="Control.FontSize" Value="16"/>
+            <Setter Property="Control.Width" Value="100"/>
+            <Setter Property="Control.Height" Value="20"/>
+            <Setter Property="Control.FontSize" Value="12"/>
             <Setter Property="Control.Margin" Value="10,0,10,0"/>
         </Style>
     </Window.Resources>
@@ -25,14 +25,15 @@
 
         <TabControl Grid.Row="0"
                     FontSize="15"
-                    SelectedItem="{Binding SelectedTab}">
-            <TabItem Header="Attributes">
+                    SelectedItem="{Binding SelectedTab}"
+                    TabStripPlacement="Left">
+            <TabItem Header="Fields">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="100"/>
                     </Grid.ColumnDefinitions>
-                    <TreeView ItemsSource="{Binding TreeCollectionView}">
+                    <TreeView ItemsSource="{Binding TreeCollectionView}"
+                              Background="AliceBlue">
                         <TreeView.Resources>
                             <HierarchicalDataTemplate DataType="{x:Type hlprs:Table}" ItemsSource="{Binding Columns}">
                                 <TextBlock Text="{Binding Name}"/>
@@ -43,14 +44,6 @@
                             </DataTemplate>
                         </TreeView.Resources>
                     </TreeView>
-                    <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Bottom">
-                        <Button Height="30"
-                            Content="Clear"
-                            Command="{Binding ClearCheckCmd}"/>
-                        <Button Height="30"
-                            Content=" Check All"
-                            Command="{Binding CheckAllCmd}"/>
-                    </StackPanel>
                 </Grid>
             </TabItem>
             <TabItem Header="Conditions">
@@ -60,7 +53,8 @@
                         <RowDefinition Height="50"></RowDefinition>
                     </Grid.RowDefinitions>
                     <ListView ItemsSource="{Binding CollectionView}"
-                                SelectedItem="{Binding SelectedCondition}">
+                                SelectedItem="{Binding SelectedCondition}"
+                              Background="AliceBlue">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Attribute">
@@ -102,7 +96,8 @@
                         </ListView.View>
                     </ListView>
                     <StackPanel Orientation="Horizontal"
-                            Grid.Row="1">
+                            Grid.Row="1"
+                                Background="AliceBlue">
                         <StackPanel>
                             <TextBlock Text="Table"
                                     HorizontalAlignment="Center"/>
@@ -149,20 +144,26 @@
 
                         <StackPanel Orientation="Horizontal"
                                 HorizontalAlignment="Right">
-                            <Button Content="Add Condition"
+                            <Button Content="Add"
                             Command="{Binding AddCondCmd}"
                             IsEnabled="{Binding AddIsEnabled}"
                                 Style="{StaticResource ButtonStyle}"/>
-                            <Button Content="Delete Condition"
+                            <Button Content="Delete"
                             Command="{Binding DeleteCondCmd}"
-                            IsEnabled="{Binding DeleteIsEnabled}"/>
+                            IsEnabled="{Binding DeleteIsEnabled}"
+                                    Style="{StaticResource ButtonStyle}"/>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
 
             </TabItem>
-            <TabItem Header="Result">
-                <ListView ItemsSource="{Binding Table}">
+            <TabItem Header="Query">
+                <DataGrid ItemsSource="{Binding DataView}"
+                          AutoGenerateColumns="True"/>
+
+
+                <!--<ListView ItemsSource="{Binding Table}"
+                          Background="AliceBlue">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn>
@@ -174,14 +175,14 @@
                             </GridViewColumn>
                         </GridView>
                     </ListView.View>
-                </ListView>
+                </ListView>-->
             </TabItem>
         </TabControl>
 
         <StackPanel Grid.Row="1"
                     Orientation="Horizontal" 
                     HorizontalAlignment="Right">
-            <Button Content="Preview query"
+            <Button Content="Show query"
                     Style="{StaticResource ButtonStyle}"
                     Command="{Binding ShowQueryCmd}"/>
             <Button Content="Run query"
