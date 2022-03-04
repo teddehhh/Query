@@ -60,35 +60,35 @@
                                 <GridViewColumn Header="Attribute">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding Attribute}"/>
+                                            <TextBlock Text="{Binding Attribute, UpdateSourceTrigger=PropertyChanged}"/>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
                                 <GridViewColumn Header="Table">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding Table}"/>
+                                            <TextBlock Text="{Binding Table, UpdateSourceTrigger=PropertyChanged}"/>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
                                 <GridViewColumn Header="Criterion">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding Operator}"/>
+                                            <TextBlock Text="{Binding Operator, UpdateSourceTrigger=PropertyChanged}"/>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
                                 <GridViewColumn Header="Value">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding Value}"/>
+                                            <TextBlock Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"/>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
                                 <GridViewColumn Header="Link">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding Operation}"/>
+                                            <TextBlock Text="{Binding Operation, UpdateSourceTrigger=PropertyChanged}"/>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
@@ -161,22 +161,6 @@
                 <DataGrid ItemsSource="{Binding DataView}"
                           AutoGenerateColumns="True"
                           Background="AliceBlue"/>
-
-
-                <!--<ListView ItemsSource="{Binding Table}"
-                          Background="AliceBlue">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn>
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding S}"></TextBlock>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                        </GridView>
-                    </ListView.View>
-                </ListView>-->
             </TabItem>
         </TabControl>
 

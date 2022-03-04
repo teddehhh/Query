@@ -209,9 +209,18 @@ namespace Query.VMs
         public RelayCommand AddCondCmd => addCondCmd ?? new RelayCommand(obj =>
         {
             object value;
-            if (selectedAttribute.Type.Contains("int"))
+            if (selectedAttribute.Type.Contains("char"))
             {
                 value = valueCond;
+            }
+            else if (selectedAttribute.Type.Contains("int"))
+            {
+                if (!int.TryParse(valueCond, out int num))
+                {
+                    MessageBox.Show("Введите число!");
+                    return;
+                }
+                value = num;
             }
             else
             {
