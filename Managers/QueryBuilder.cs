@@ -13,7 +13,7 @@ namespace Query.Managers
         }
         public string QueryBuild(List<Helpers.Attribute> checkedDttributes, List<Condition> conditions)
         {
-            string select = $"SELECT {string.Join(", ", checkedDttributes.Select(x => $"{x.TableName}.{x.Name} as {x.Name}{x.TableName}"))}";
+            string select = $"SELECT {string.Join(", ", checkedDttributes.Select(x => $"{x.TableName}.{x.Name} as {x.TableName}{x.Name}"))}";
 
             List<string> usedTables = checkedDttributes.Select(x => x.TableName).Distinct().ToList();
             string from = "FROM " + TableJoinBuild(usedTables);
