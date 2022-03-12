@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:Query"
         mc:Ignorable="d"
         Title="MainWindow" MinHeight="350" MinWidth="900"
-        Background="NavajoWhite">
+        Background="SeaGreen">
     <Window.Resources>
         <Style x:Key="ButtonStyle"
                TargetType="{x:Type Button}">
@@ -26,36 +26,57 @@
         <TabControl Grid.Row="0"
                     FontSize="14"
                     SelectedItem="{Binding SelectedTab}"
-                    TabStripPlacement="Bottom">
+                    TabStripPlacement="Left">
             <TabItem Header="Поля">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <TreeView ItemsSource="{Binding TreeCollectionView}"
-                              Background="NavajoWhite"
-                              FontSize="18">
-                        <TreeView.Resources>
-                            <HierarchicalDataTemplate DataType="{x:Type hlprs:Table}" ItemsSource="{Binding Columns}">
-                                <TextBlock Text="{Binding Name}"/>
-                            </HierarchicalDataTemplate>
-                            <DataTemplate DataType="{x:Type hlprs:Attribute}">
-                                <CheckBox Content="{Binding Name}"
-                                        IsChecked="{Binding IsChecked}"/>
-                            </DataTemplate>
-                        </TreeView.Resources>
-                    </TreeView>
+                    <ListView ItemsSource="{Binding Attributes}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Таблица">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding TableName}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Атритбут">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Тип">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Type}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Выбор">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding IsChecked}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
                 </Grid>
             </TabItem>
-            <TabItem Header="Условия">
+            <TabItem Header="Список условий">
                 <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="50"></RowDefinition>
-                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="200"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
                     <ListView ItemsSource="{Binding CollectionView}"
                                 SelectedItem="{Binding SelectedCondition}"
-                              Background="NavajoWhite">
+                              Background="SeaGreen">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Имя атрибута">
@@ -96,9 +117,9 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <StackPanel Orientation="Horizontal"
-                            Grid.Row="1"
-                                Background="NavajoWhite">
+                    <StackPanel Orientation="Vertical"
+                            Grid.Column="1"
+                                Background="SeaGreen">
                         <StackPanel>
                             <TextBlock Text="Выбор таблицы"
                                     HorizontalAlignment="Center"/>
@@ -134,7 +155,7 @@
                             <TextBlock Text="Значения"
                                     HorizontalAlignment="Center"/>
 
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Vertical">
                                 <TextBox Width="100"
                                     Text="{Binding ValueCond, UpdateSourceTrigger=PropertyChanged}"
                                     IsEnabled="{Binding ValueIsEnabled}"/>
@@ -143,8 +164,8 @@
                             </StackPanel>
                         </StackPanel>
 
-                        <StackPanel Orientation="Horizontal"
-                                HorizontalAlignment="Right">
+                        <StackPanel Orientation="Vertical"
+                                HorizontalAlignment="Center">
                             <Button Content="Добавить условие"
                             Command="{Binding AddCondCmd}"
                             IsEnabled="{Binding AddIsEnabled}"
@@ -158,10 +179,10 @@
                 </Grid>
 
             </TabItem>
-            <TabItem Header="Запрос">
+            <TabItem Header="Результат">
                 <DataGrid ItemsSource="{Binding DataView}"
                           AutoGenerateColumns="True"
-                          Background="NavajoWhite"/>
+                          Background="SeaGreen"/>
             </TabItem>
         </TabControl>
 

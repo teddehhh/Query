@@ -37,24 +37,6 @@ namespace Query.VMs
             Operators.Add(">");
             Operators.Add("<>");
             Operators.Add("=");
-
-            treeCollection = new ObservableCollection<Table>();
-            FillTreeCollection();
-        }
-
-        private void FillTreeCollection()
-        {
-            foreach (var item in Attributes)
-            {
-                var table = treeCollection.Where(t => t.Name == item.TableName);
-                if (table.Count() == 0)
-                {
-                    treeCollection.Add(new Helpers.Table(item.TableName) { Columns = new List<Helpers.Attribute>() });
-                    treeCollection.Last().Columns.Add(item);
-                    continue;
-                }
-                table.FirstOrDefault().Columns.Add(item);
-            }
         }
 
         private string selectedTable;
@@ -67,82 +49,88 @@ namespace Query.VMs
         {
             get
             {
-                OnPropertyChanged(nameof(AttributesIsEnabled));
-                OnPropertyChanged(nameof(CondAttributes));
                 return selectedTable;
             }
             set
             {
                 selectedTable = value;
+                OnPropertyChanged(nameof(CondAttributes));
+                OnPropertyChanged(nameof(AttributesIsEnabled));
             }
         }
         public Helpers.Attribute SelectedAttribute
         {
             get
             {
-                OnPropertyChanged(nameof(AddIsEnabled));
-                OnPropertyChanged(nameof(DateIsEnabled));
-                OnPropertyChanged(nameof(ValueIsEnabled));
                 return selectedAttribute;
             }
             set
             {
                 selectedAttribute = value;
+                OnPropertyChanged(nameof(AddIsEnabled));
+                OnPropertyChanged(nameof(DateIsEnabled));
+                OnPropertyChanged(nameof(ValueIsEnabled));
             }
         }
         public string SelectedOperator
         {
             get
             {
-                OnPropertyChanged(nameof(AddIsEnabled));
                 return selectedOperator;
             }
             set
             {
                 selectedOperator = value;
+                OnPropertyChanged(nameof(AddIsEnabled));
             }
         }
         public string SelectedOperation
         {
             get
             {
-                OnPropertyChanged(nameof(AddIsEnabled));
                 return selectedOperation;
             }
             set
             {
                 selectedOperation = value;
+                OnPropertyChanged(nameof(AddIsEnabled));
             }
         }
         public Helpers.Condition SelectedCondition
         {
             get
             {
-                OnPropertyChanged(nameof(DeleteIsEnabled));
                 return selectedCondition;
             }
-            set => selectedCondition = value;
+            set
+            {
+                selectedCondition = value;
+                OnPropertyChanged(nameof(DeleteIsEnabled));
+            }
         }
         public string ValueCond
         {
             get
             {
-                OnPropertyChanged(nameof(AddIsEnabled));
                 return valueCond;
             }
-            set { valueCond = value; }
+            set
+            {
+                valueCond = value;
+                OnPropertyChanged(nameof(AddIsEnabled));
+            }
         }
         private DateTime? selectedDate;
         public DateTime? SelectedDate
         {
             get
             {
-                OnPropertyChanged(nameof(AddIsEnabled));
                 return selectedDate;
             }
             set
             {
                 selectedDate = value;
+                OnPropertyChanged(nameof(AddIsEnabled));
             }
         }
         public bool AttributesIsEnabled => selectedTable != null;
@@ -156,11 +144,14 @@ namespace Query.VMs
         {
             get
             {
-                OnPropertyChanged(nameof(CondTables));
-                OnPropertyChanged(nameof(CondAttributes));
                 return tabItem;
             }
-            set => tabItem = value;
+            set 
+            {
+                tabItem = value;
+                OnPropertyChanged(nameof(CondTables));
+                OnPropertyChanged(nameof(CondAttributes));
+            }
         }
         public ICollectionView CollectionView
         {
@@ -174,16 +165,8 @@ namespace Query.VMs
         {
             get
             {
-                var attr = treeCollection.Select(x => (x.Columns).Where(y => y.IsChecked).Select(y => y.TableName).Distinct());
-                List<string> result = new List<string>();
-                foreach (var item in attr)
-                {
-                    foreach (var atr in item)
-                    {
-                        result.Add(atr);
-                    }
-                }
-                return result;
+                var attr = Attributes.Where(x => x.IsChecked).Select(x => x.TableName).Distinct().ToList();
+                return attr;
             }
         }
         public List<Helpers.Attribute> CondAttributes
@@ -192,7 +175,7 @@ namespace Query.VMs
             {
                 if (selectedTable != null)
                 {
-                    return treeCollection.Where(x => x.Name == selectedTable).FirstOrDefault().Columns.ToList();
+                    return Attributes.Where(x => x.TableName == SelectedTable).ToList();
                 }
                 return null;
             }
@@ -247,7 +230,16 @@ namespace Query.VMs
             {
                 return;
             }
-            List<List<string>> table = DataProvider.Instance.RunQuery(_QueryBuilder.QueryBuild(Attributes.Where(a => a.IsChecked).ToList(), Conditions.ToList()));
+            List<List<string>> table;
+            try
+            {
+                table = DataProvider.Instance.RunQuery(_QueryBuilder.QueryBuild(Attributes.Where(a => a.IsChecked).ToList(), Conditions.ToList()));
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Не удалось выполнить запрос");
+                return;
+            }
             dataTable = new DataTable();
             foreach (var item in table.First())
             {
@@ -279,14 +271,6 @@ namespace Query.VMs
             OnPropertyChanged(nameof(SelectedDate));
             OnPropertyChanged(nameof(OperationIsEnabled));
         }
-        public ICollectionView TreeCollectionView
-        {
-            get
-            {
-                return CollectionViewSource.GetDefaultView(treeCollection);
-            }
-        }
-        private ObservableCollection<Table> treeCollection;
         public List<string> Headers { get; set; }
         public List<string> Rows { get; set; }
         public List<Result> Table { get; set; }
