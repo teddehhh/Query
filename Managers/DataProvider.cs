@@ -16,7 +16,7 @@ namespace Query.Managers
         {
             try
             {
-                conn = new SqlConnection($@"Server=tedpc\SQLEXPRESS;Database=SportsResults;User Id=sa;Password=pass90");
+                conn = new SqlConnection($@"Server=tedpc\SQLEXPRESS;Database=Serials;User Id=sa;Password=pass90");
                 conn.Open();
             }
             catch (Exception ex)

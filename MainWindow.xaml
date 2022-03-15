@@ -7,12 +7,11 @@
         xmlns:local="clr-namespace:Query"
         mc:Ignorable="d"
         Title="MainWindow" MinHeight="350" MinWidth="900"
-        Background="SeaGreen"
-        FontSize="16">
+        FontSize="20">
     <Window.Resources>
         <Style x:Key="ButtonStyle"
                TargetType="{x:Type Button}">
-            <Setter Property="Control.Width" Value="150"/>
+            <Setter Property="Control.Width" Value="200"/>
             <Setter Property="Control.Height" Value="30"/>
             <Setter Property="Control.FontSize" Value="16"/>
             <Setter Property="Control.Margin" Value="10,0,10,0"/>
@@ -27,7 +26,7 @@
         <TabControl Grid.Row="0"
                     FontSize="14"
                     SelectedItem="{Binding SelectedTab}"
-                    TabStripPlacement="Left">
+                    TabStripPlacement="Top">
             <TabItem Header="Поля">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -71,13 +70,12 @@
             </TabItem>
             <TabItem Header="Список условий">
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="200"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="200"/>
+                    </Grid.RowDefinitions>
                     <ListView ItemsSource="{Binding CollectionView}"
-                                SelectedItem="{Binding SelectedCondition}"
-                              Background="SeaGreen">
+                                SelectedItem="{Binding SelectedCondition}">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Имя атрибута">
@@ -118,46 +116,47 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <StackPanel Orientation="Vertical"
-                            Grid.Column="1"
-                                Background="SeaGreen">
-                        <StackPanel>
-                            <TextBlock Text="Выбор таблицы"
+                    <StackPanel Orientation="Horizontal"
+                            Grid.Row="1">
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel>
+                                <TextBlock Text="Таблицы"
                                     HorizontalAlignment="Center"/>
-                            <ComboBox ItemsSource="{Binding CondTables}"
+                                <ComboBox ItemsSource="{Binding CondTables}"
                                 SelectedItem="{Binding SelectedTable}"
                                 Width="100"/>
-                        </StackPanel>
-                        <StackPanel>
-                            <TextBlock Text="Выбор атрибута"
+                            </StackPanel>
+                            <StackPanel>
+                                <TextBlock Text="Атрибуты таблицы"
                                     HorizontalAlignment="Center"/>
-                            <ComboBox IsEnabled="{Binding AttributesIsEnabled}"
+                                <ComboBox IsEnabled="{Binding AttributesIsEnabled}"
                                 ItemsSource="{Binding CondAttributes}"
                                 SelectedItem="{Binding SelectedAttribute}"
                                 DisplayMemberPath="Name"
                                 Width="100"/>
-                        </StackPanel>
-                        <StackPanel>
-                            <TextBlock Text="Критерий"
+                            </StackPanel>
+                            <StackPanel>
+                                <TextBlock Text="Критерии"
                                     HorizontalAlignment="Center"/>
-                            <ComboBox ItemsSource="{Binding Operators}"
+                                <ComboBox ItemsSource="{Binding Operators}"
                                 SelectedItem="{Binding SelectedOperator}"
                                 Width="100"/>
-                        </StackPanel>
-                        <StackPanel>
-                            <TextBlock Text="Связка"
+                            </StackPanel>
+                            <StackPanel>
+                                <TextBlock Text="Связки"
                                     HorizontalAlignment="Center"/>
-                            <ComboBox ItemsSource="{Binding Operations}"
+                                <ComboBox ItemsSource="{Binding Operations}"
                                 SelectedItem="{Binding SelectedOperation}"
                                 IsEnabled="{Binding OperationIsEnabled}"
                                 Width="100"/>
+                            </StackPanel>
                         </StackPanel>
                         <StackPanel Orientation="Vertical">
-                            <TextBlock Text="Значения"
+                            <TextBlock Text="Выбор"
                                     HorizontalAlignment="Center"/>
 
                             <StackPanel Orientation="Vertical">
-                                <TextBox Width="100"
+                                <TextBox Width="150"
                                     Text="{Binding ValueCond, UpdateSourceTrigger=PropertyChanged}"
                                     IsEnabled="{Binding ValueIsEnabled}"/>
                                 <DatePicker SelectedDate="{Binding SelectedDate, UpdateSourceTrigger=PropertyChanged}"
@@ -167,11 +166,11 @@
 
                         <StackPanel Orientation="Vertical"
                                 HorizontalAlignment="Center">
-                            <Button Content="Добавить условие"
+                            <Button Content="+"
                             Command="{Binding AddCondCmd}"
                             IsEnabled="{Binding AddIsEnabled}"
                                 Style="{StaticResource ButtonStyle}"/>
-                            <Button Content="Удалить условие"
+                            <Button Content="-"
                             Command="{Binding DeleteCondCmd}"
                             IsEnabled="{Binding DeleteIsEnabled}"
                                     Style="{StaticResource ButtonStyle}"/>
@@ -182,18 +181,17 @@
             </TabItem>
             <TabItem Header="Результат">
                 <DataGrid ItemsSource="{Binding DataView}"
-                          AutoGenerateColumns="True"
-                          Background="SeaGreen"/>
+                          AutoGenerateColumns="True"/>
             </TabItem>
         </TabControl>
 
         <StackPanel Grid.Row="1"
                     Orientation="Horizontal" 
                     HorizontalAlignment="Right">
-            <Button Content="Показать запрос"
+            <Button Content="Посмотреть запрос"
                     Style="{StaticResource ButtonStyle}"
                     Command="{Binding ShowQueryCmd}"/>
-            <Button Content="Выполнить запрос"
+            <Button Content="Выполнить"
                     Style="{StaticResource ButtonStyle}"
                     Command="{Binding RunQueryCmd}"/>
         </StackPanel>
