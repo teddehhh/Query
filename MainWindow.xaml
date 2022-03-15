@@ -27,7 +27,7 @@
                     FontSize="14"
                     SelectedItem="{Binding SelectedTab}"
                     TabStripPlacement="Top">
-            <TabItem Header="Поля">
+            <TabItem Header="Атрибуты">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -42,14 +42,14 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="Атритбут">
+                                <GridViewColumn Header="Название атрибута">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding Name}"/>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="Тип">
+                                <GridViewColumn Header="Тип данных">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding Type}"/>
@@ -68,7 +68,7 @@
                     </ListView>
                 </Grid>
             </TabItem>
-            <TabItem Header="Список условий">
+            <TabItem Header="Условия">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -179,7 +179,7 @@
                 </Grid>
 
             </TabItem>
-            <TabItem Header="Результат">
+            <TabItem Header="Таблица">
                 <DataGrid ItemsSource="{Binding DataView}"
                           AutoGenerateColumns="True"/>
             </TabItem>
